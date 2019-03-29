@@ -1,0 +1,6 @@
+# Data folder
+data/
+
+# Keep only SCSS files
+# Remove compiled min.css
+**/*.min.css

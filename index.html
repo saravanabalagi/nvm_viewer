@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>NVM Viewer</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="index.min.css">
+	</head>
+	<body>
+
+		<!-- ui start -->
+		<div class="main-ui">
+
+			<button type="button" class="btn btn-primary" onclick="toggleAnimate()">Toggle Animate</button>
+			<button type="button" class="btn btn-info" onclick="resetView()">Reset View</button>
+			<br />
+
+			<button type="button" class="btn btn-warning" id='saveView' onclick="saveView()">Save View</button>
+			<button type="button" class="btn btn-warning" id='loadView' onclick="loadView()">Load View</button>
+			<br />
+
+			<div class="info-panel">
+					<div class="info-tooltip">
+						<table class="table table-striped">
+							<tr> <td class='label'>X</td>	 <td class="timestamp"></td>  </tr>
+							<tr> <td class='label'>Y</td>	 <td class="latitude"></td>   </tr>
+							<tr> <td class='label'>Z</td>	 <td class="longitude"></td>  </tr>
+							<tr> <td class='label'>R</td>	 <td class="speed"></td>      </tr>
+							<tr> <td class='label'>G</td>	 <td class="accuracy"></td>   </tr>
+							<tr> <td class='label'>G</td>	 <td class="course"></td>     </tr>
+						</table>
+					</div>
+			</div>
+
+		</div>
+		<!-- ui end -->
+
+		<!-- scripts -->
+		<script src="js/three.js"></script>
+		<script src="js/map_controls.js"></script>
+		<script src="js/orbit_controls.js"></script>
+		<script src="js/webgl.js"></script>
+		<script src="js/tooltip.js"></script>
+		<script src="js/render.js"></script>
+		<script src="js/load_file.js"></script>
+		<script src="js/view_functions.js"></script>
+		<script src="js/index.js"></script>
+		<!-- scripts end -->
+
+	</body>
+</html>
