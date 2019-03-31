@@ -1,6 +1,5 @@
 var mouse = { x: 0, y: 0 };
 var currentIntersectedObject;
-var timer;
 
 document.addEventListener('mousemove', onDocumentMouseMove, false);
 function onDocumentMouseMove(event) {
@@ -48,14 +47,29 @@ function update() {
 }
 
 function showToolTip(mouse, data) {
-  timer = null;
+
   let tooltip = document.getElementsByClassName('info-tooltip')[0];
-  Object.keys(data).map(key => tooltip.getElementsByClassName(key)[0].innerHTML = data[key]);
+  let tooltipTable = tooltip.getElementsByClassName('table')[0];
+
+  tooltipTable.innerHTML = '';
+  Object.keys(data).map(key => {
+    let trNode = document.createElement('tr');
+
+    let tdLabelNode = document.createElement('td');
+    tdLabelNode.innerHTML = key;
+    trNode.appendChild(tdLabelNode);
+
+    let tdValueNode = document.createElement('td');
+    tdValueNode.innerHTML = data[key];
+    trNode.appendChild(tdValueNode);
+
+    tooltipTable.appendChild(trNode);
+  });
+
   tooltip.style.display = 'block';
 }
 
 function hideToolTip() {
-  timer = null;
   let tooltip = document.getElementsByClassName('info-tooltip')[0];
   tooltip.style.display = 'none';
 }

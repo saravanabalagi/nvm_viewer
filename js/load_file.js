@@ -79,7 +79,7 @@ function loadFile(fileUrl) {
           mesh.updateMatrix();
           mesh.matrixAutoUpdate = false;
 
-          mesh.data = {fl, position, rotation};
+          mesh.data = {fl, position, rotationEuler};
 
           mesh.name = 'car';
           scene.add( mesh );
