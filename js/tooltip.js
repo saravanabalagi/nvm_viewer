@@ -52,6 +52,18 @@ function showToolTip(mouse, data) {
   let tooltipTable = tooltip.getElementsByClassName('table')[0];
 
   tooltipTable.innerHTML = '';
+  getTableHTML(tooltipTable, data);
+
+  tooltip.style.display = 'block';
+}
+
+function hideToolTip() {
+  let tooltip = document.getElementsByClassName('info-tooltip')[0];
+  tooltip.style.display = 'none';
+}
+
+// Fill table recursively parsing data
+function getTableHTML(parent, data) {
   Object.keys(data).map(key => {
     let trNode = document.createElement('tr');
 
@@ -60,16 +72,13 @@ function showToolTip(mouse, data) {
     trNode.appendChild(tdLabelNode);
 
     let tdValueNode = document.createElement('td');
-    tdValueNode.innerHTML = data[key];
+    if(typeof data[key] === 'object' && data[key] !== null){
+      tdValueNode.className += 'subcontent';
+      getTableHTML(tdValueNode, data[key]);
+    }
+    else tdValueNode.innerHTML = data[key];
     trNode.appendChild(tdValueNode);
 
-    tooltipTable.appendChild(trNode);
+    parent.appendChild(trNode);
   });
-
-  tooltip.style.display = 'block';
-}
-
-function hideToolTip() {
-  let tooltip = document.getElementsByClassName('info-tooltip')[0];
-  tooltip.style.display = 'none';
 }
