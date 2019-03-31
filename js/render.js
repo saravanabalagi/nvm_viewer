@@ -7,18 +7,20 @@ scene.fog = new THREE.FogExp2( 0xcccccc, 0.0002 );
 camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
 camera.position.set( 60, 50, 60 );
 
-// // load from folder once car model is loaded
-// const folderLocation = 'http://localhost:3000/data';
-// function loadModel() { loadFromFolder(folderLocation); }
-//
-// // car
-// var car = null;
-// var manager = new THREE.LoadingManager( loadModel );
-// var loader = new THREE.OBJLoader( manager );
-// // loader.load( 'js/male02.obj', function ( obj ) { car = obj }, onProgress, onError );
-// loader.load( 'js/car.obj', function ( obj ) {
-// 	car = obj;
-// }, () => {}, () => {} );
+// load from folder once car model is loaded
+const folderLocation = 'http://localhost:8000/data';
+const filename = 'slice5.nvm';
+
+function loadModel() { loadFile(folderLocation + '/' + filename); }
+
+// car
+var car = null;
+var manager = new THREE.LoadingManager( loadModel );
+var loader = new THREE.OBJLoader( manager );
+// loader.load( 'js/car.obj', function ( obj ) { car = obj }, onProgress, onError );
+loader.load( 'js/car.obj', function ( obj ) {
+	car = obj;
+}, () => {}, () => {} );
 
 // renderer
 var renderer = new THREE.WebGLRenderer();

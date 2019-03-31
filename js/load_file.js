@@ -1,3 +1,6 @@
+const meshRotationOffset = 45;
+const cameraRotationOffset = -45;
+
 function loadFile(fileUrl) {
 
   console.log('Loading Files in Folder: ', fileUrl);
@@ -28,7 +31,7 @@ function loadFile(fileUrl) {
 
         const cameraIndex = 1 + 1;
         let cameras = dataLines.slice(cameraIndex, cameraIndex + numberOfCameras);
-        cameras.map(cameraLine => {
+        cameras.map((cameraLine, i) => {
 
           let params = cameraLine.split(' ');
 
@@ -53,27 +56,53 @@ function loadFile(fileUrl) {
           if(initialPosition === null)
             initialPosition = position;
 
-          camera.position.x = x - initialPosition.x;
-          camera.position.y = z - initialPosition.z;
-          camera.position.z = y - initialPosition.y;
+          let mesh = car.clone();
 
-          // camera.rotation.x = rotationEuler.x
-          // camera.rotation.z = rotationEuler.z
-          camera.rotation.y = rotationEuler.y
-          // console.log(rotationEuler);
-
-          camera.data = {fl, position, rotation};
-
-          scene.add( camera );
-          scene.add( cameraHelper );
+          // increase hue as the car moves forward
+          let hValue = i/(cameras.length*1.5);
+          let coloredMeshMaterial = new THREE.MeshPhongMaterial( { color: new THREE.Color().setHSL(hValue, 0.8, 0.7) } );
+          mesh.children.filter(e => e.name=='Body_Plane')[0].material = coloredMeshMaterial;
 
           if(!initialPosition)
             position = initialPosition;
+
+          mesh.position.x = x - initialPosition.x;
+          mesh.position.y = z - initialPosition.z;
+          mesh.position.z = y - initialPosition.y;
+
+
+          // mesh.rotation.x = rotationEuler.x
+          // mesh.rotation.z = rotationEuler.z
+          mesh.rotation.y = rotationEuler.y + (meshRotationOffset * Math.PI / 180)
+          // console.log(rotationEuler);
+
+          mesh.updateMatrix();
+          mesh.matrixAutoUpdate = false;
+
+          mesh.data = {fl, position, rotation};
+
+          mesh.name = 'car';
+          scene.add( mesh );
+
+          // add camera
+          camera.position.x = mesh.position.x
+          camera.position.y = mesh.position.y
+          camera.position.z = mesh.position.z
+          camera.rotation.x = mesh.rotation.x
+          camera.rotation.z = mesh.rotation.z
+          camera.rotation.y = mesh.rotation.y + ( cameraRotationOffset * Math.PI / 180 )
+
+          scene.add( camera );
+          scene.add( cameraHelper );
 
         });
 
         const numberOfPoints = parseInt(dataLines[cameraIndex + numberOfCameras].split(' ')[0]);
         console.log({numberOfPoints});
+
+        let dotGeometry = new THREE.Geometry();
+        let dotMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: false } );
+
 
 
         const pointIndex = cameraIndex + numberOfCameras + 1
@@ -102,15 +131,12 @@ function loadFile(fileUrl) {
             measurements.push(measurementsList.slice(i*4, i*4 + 4));
 
           // create dot to display
-          var dotGeometry = new THREE.Geometry();
           dotGeometry.vertices.push(new THREE.Vector3( x - initialPosition.x, z - initialPosition.z, y - initialPosition.y ));
 
-          var dotMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: false } );
-          let dot = new THREE.Points( dotGeometry, dotMaterial );
-
-          scene.add( dot );
-
         });
+
+        let dot = new THREE.Points( dotGeometry, dotMaterial );
+        scene.add( dot );
 
     });
 
