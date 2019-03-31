@@ -23,20 +23,27 @@ function update() {
   var intersects = ray.intersectObjects( scene.children, true );
   if ( intersects.length > 0 ) {
 
-      if ( intersects[ 0 ].object != currentIntersectedObject ) {
-          // restore previous intersection object (if it exists) to its original color
-          if ( currentIntersectedObject ) {
-              currentIntersectedObject.children[13].material.color.setHex( currentIntersectedObject.currentHex );
-          }
+    for (var i = 0; i < intersects.length; i++) {
+      if ( intersects[ i ].object != currentIntersectedObject ) {
 
-          if(intersects[ 0 ].object.type == 'Mesh'
-              && intersects[ 0 ].object.parent.name == 'car') {
-            currentIntersectedObject = intersects[ 0 ].object.parent;
-            currentIntersectedObject.currentHex = currentIntersectedObject.children[13].material.color.getHex();
-            currentIntersectedObject.children[13].material.color.setHex( 0x000000 );
-            showToolTip(mouse, currentIntersectedObject.data);
-          }
+        if(intersects[ i ].object.type == 'Mesh'
+            && intersects[ i ].object.parent.name == 'car') {
+
+          // restore previous intersection object (if it exists) to its original color
+          if ( currentIntersectedObject )
+              currentIntersectedObject.children[13].material.color.setHex( currentIntersectedObject.currentHex );
+
+          currentIntersectedObject = intersects[ i ].object.parent;
+          currentIntersectedObject.currentHex = currentIntersectedObject.children[13].material.color.getHex();
+          currentIntersectedObject.children[13].material.color.setHex( 0x000000 );
+          showToolTip(mouse, currentIntersectedObject.data);
+          break;
+        }
+
       }
+    }
+
+
 
   } else {
     if ( currentIntersectedObject )

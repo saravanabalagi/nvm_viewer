@@ -103,8 +103,6 @@ function loadFile(fileUrl) {
         let dotGeometry = new THREE.Geometry();
         let dotMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: false } );
 
-
-
         const pointIndex = cameraIndex + numberOfCameras + 1
         let points = dataLines.slice(pointIndex, pointIndex + numberOfPoints);
         points.map(pointLine => {
