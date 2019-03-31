@@ -83,9 +83,9 @@ function loadFile(fileUrl) {
           let params = pointLine.split(' ');
 
           // parse xyz
-          let x = params[0] - initialPosition.x;
-          let y = params[1] - initialPosition.z;
-          let z = params[2] - initialPosition.y;
+          let x = params[0];
+          let y = params[1];
+          let z = params[2];
 
           // parse rgb
           let r = params[3];
@@ -101,10 +101,9 @@ function loadFile(fileUrl) {
           for (let i = 0; i < numberOfMeasurements; i++)
             measurements.push(measurementsList.slice(i*4, i*4 + 4));
 
-          // console.log(measurements);
-
+          // create dot to display
           var dotGeometry = new THREE.Geometry();
-          dotGeometry.vertices.push(new THREE.Vector3( x, y, z ));
+          dotGeometry.vertices.push(new THREE.Vector3( x - initialPosition.x, z - initialPosition.z, y - initialPosition.y ));
 
           var dotMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: false } );
           let dot = new THREE.Points( dotGeometry, dotMaterial );
