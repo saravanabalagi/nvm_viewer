@@ -24,11 +24,9 @@ function loadFile(fileUrl) {
         const numberOfCameras = parseInt(dataLines[1].split(' ')[0]);
         console.log({numberOfCameras});
 
-        const cameraIndex = 2
-        const pointIndex = cameraIndex + numberOfCameras
-
         let initialPosition = null;
 
+        const cameraIndex = 1 + 1;
         let cameras = dataLines.slice(cameraIndex, cameraIndex + numberOfCameras);
         cameras.map(cameraLine => {
 
@@ -60,9 +58,9 @@ function loadFile(fileUrl) {
           camera.position.z = y - initialPosition.y;
 
           // camera.rotation.x = rotationEuler.x
-          // camera.rotation.z = rotationEuler.y
+          // camera.rotation.z = rotationEuler.z
           camera.rotation.y = rotationEuler.y
-          console.log(rotationEuler);
+          // console.log(rotationEuler);
 
           camera.data = {fl, position, rotation};
 
@@ -74,8 +72,46 @@ function loadFile(fileUrl) {
 
         });
 
-        const numberOfPoints = parseInt(dataLines[pointIndex].split(' ')[0]);
+        const numberOfPoints = parseInt(dataLines[cameraIndex + numberOfCameras].split(' ')[0]);
         console.log({numberOfPoints});
+
+
+        const pointIndex = cameraIndex + numberOfCameras + 1
+        let points = dataLines.slice(pointIndex, pointIndex + numberOfPoints);
+        points.map(pointLine => {
+
+          let params = pointLine.split(' ');
+
+          // parse xyz
+          let x = params[0] - initialPosition.x;
+          let y = params[1] - initialPosition.z;
+          let z = params[2] - initialPosition.y;
+
+          // parse rgb
+          let r = params[3];
+          let g = params[4];
+          let b = params[5];
+
+          // parse number of measurements
+          let numberOfMeasurements = params[6];
+          let measurementsList = params.slice(7);
+
+          // parse measurements
+          let measurements = [];
+          for (let i = 0; i < numberOfMeasurements; i++)
+            measurements.push(measurementsList.slice(i*4, i*4 + 4));
+
+          // console.log(measurements);
+
+          var dotGeometry = new THREE.Geometry();
+          dotGeometry.vertices.push(new THREE.Vector3( x, y, z ));
+
+          var dotMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: false } );
+          let dot = new THREE.Points( dotGeometry, dotMaterial );
+
+          scene.add( dot );
+
+        });
 
     });
 
