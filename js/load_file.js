@@ -1,6 +1,9 @@
 const meshRotationOffset = 45;
 const cameraRotationOffset = -45;
 
+var points = [];
+var cameras = [];
+
 function loadFile(fileUrl) {
 
   console.log('Loading Files in Folder: ', fileUrl);
@@ -30,8 +33,8 @@ function loadFile(fileUrl) {
         let initialPosition = null;
 
         const cameraIndex = 1 + 1;
-        let cameras = dataLines.slice(cameraIndex, cameraIndex + numberOfCameras);
-        cameras.map((cameraLine, i) => {
+        let camerasInFile = dataLines.slice(cameraIndex, cameraIndex + numberOfCameras);
+        camerasInFile.map((cameraLine, i) => {
 
           let params = cameraLine.split(' ');
 
@@ -59,7 +62,7 @@ function loadFile(fileUrl) {
           let mesh = car.clone();
 
           // increase hue as the car moves forward
-          let hValue = i/(cameras.length*1.5);
+          let hValue = i/(camerasInFile.length*1.5);
           let coloredMeshMaterial = new THREE.MeshPhongMaterial( { color: new THREE.Color().setHSL(hValue, 0.8, 0.7) } );
           mesh.children.filter(e => e.name=='Body_Plane')[0].material = coloredMeshMaterial;
 
@@ -70,7 +73,6 @@ function loadFile(fileUrl) {
           mesh.position.y = z - initialPosition.z;
           mesh.position.z = y - initialPosition.y;
 
-
           // mesh.rotation.x = rotationEuler.x
           // mesh.rotation.z = rotationEuler.z
           mesh.rotation.y = rotationEuler.y + (meshRotationOffset * Math.PI / 180)
@@ -79,7 +81,7 @@ function loadFile(fileUrl) {
           mesh.updateMatrix();
           mesh.matrixAutoUpdate = false;
 
-          mesh.data = {focalLength: fl, position, rotationEuler};
+          mesh.data = {focalLength: fl, position, rotationEuler, index: i};
 
           mesh.name = 'car';
           scene.add( mesh );
@@ -97,6 +99,9 @@ function loadFile(fileUrl) {
           scene.add( camera );
           scene.add( cameraHelper );
 
+          // Add to global cameras
+          cameras.push({position, rotationEuler, focalLength: fl, index: i});
+
         });
 
         const numberOfPoints = parseInt(dataLines[cameraIndex + numberOfCameras].split(' ')[0]);
@@ -106,8 +111,8 @@ function loadFile(fileUrl) {
         let dotMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: false } );
 
         const pointIndex = cameraIndex + numberOfCameras + 1
-        let points = dataLines.slice(pointIndex, pointIndex + numberOfPoints);
-        points.map(pointLine => {
+        let pointsInFile = dataLines.slice(pointIndex, pointIndex + numberOfPoints);
+        pointsInFile.map((pointLine, i) => {
 
           let params = pointLine.split(' ');
 
@@ -115,11 +120,13 @@ function loadFile(fileUrl) {
           let x = params[0];
           let y = params[1];
           let z = params[2];
+          let position = {x, y, z};
 
           // parse rgb
           let r = params[3];
           let g = params[4];
           let b = params[5];
+          let color = {r, g, b};
 
           // parse number of measurements
           let numberOfMeasurements = params[6];
@@ -132,6 +139,9 @@ function loadFile(fileUrl) {
 
           // create dot to display
           dotGeometry.vertices.push(new THREE.Vector3( x - initialPosition.x, z - initialPosition.z, y - initialPosition.y ));
+
+          // Add to global points
+          points.push({position, color, measurements, index: i});
 
         });
 
