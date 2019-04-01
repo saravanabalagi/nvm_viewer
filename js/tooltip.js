@@ -37,6 +37,7 @@ function update() {
           currentIntersectedObject.currentHex = currentIntersectedObject.children[13].material.color.getHex();
           currentIntersectedObject.children[13].material.color.setHex( 0x000000 );
           showToolTip(mouse, currentIntersectedObject.data);
+          highlightPoints(currentIntersectedObject.data.index);
           break;
         }
 
@@ -88,4 +89,9 @@ function getTableHTML(parent, data) {
 
     parent.appendChild(trNode);
   });
+}
+
+function highlightPoints(index) {
+  let selectedPoints = points.filter(point => point.measurements.some(measurement => measurement[0]==index))
+  console.log(selectedPoints);
 }
