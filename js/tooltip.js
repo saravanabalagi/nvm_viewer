@@ -23,6 +23,7 @@ function update() {
   var intersects = ray.intersectObjects( scene.children, true );
   if ( intersects.length > 0 ) {
 
+    // Keep checking even behind the object in front
     for (var i = 0; i < intersects.length; i++) {
       if ( intersects[ i ].object != currentIntersectedObject ) {
 

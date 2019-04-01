@@ -17,6 +17,7 @@ function loadModel() { loadFile(folderLocation + '/' + filename); }
 var car = null;
 var manager = new THREE.LoadingManager( loadModel );
 var loader = new THREE.OBJLoader( manager );
+
 // loader.load( 'js/car.obj', function ( obj ) { car = obj }, onProgress, onError );
 loader.load( 'js/car.obj', function ( obj ) {
 	car = obj;

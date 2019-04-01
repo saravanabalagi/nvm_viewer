@@ -92,6 +92,8 @@ function loadFile(fileUrl) {
           camera.rotation.z = mesh.rotation.z
           camera.rotation.y = mesh.rotation.y + ( cameraRotationOffset * Math.PI / 180 )
 
+          camera.name = 'carCamera';
+          cameraHelper.name = 'carCameraHelper';
           scene.add( camera );
           scene.add( cameraHelper );
 
