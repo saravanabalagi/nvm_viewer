@@ -4,6 +4,8 @@ const cameraRotationOffset = -45;
 var points = [];
 var cameras = [];
 
+var initialPosition = null;
+
 function loadFile(fileUrl) {
 
   console.log('Loading Files in Folder: ', fileUrl);
@@ -29,8 +31,6 @@ function loadFile(fileUrl) {
 
         const numberOfCameras = parseInt(dataLines[1].split(' ')[0]);
         console.log({numberOfCameras});
-
-        let initialPosition = null;
 
         const cameraIndex = 1 + 1;
         let camerasInFile = dataLines.slice(cameraIndex, cameraIndex + numberOfCameras);

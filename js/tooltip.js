@@ -32,27 +32,31 @@ function update() {
 
           // restore previous intersection object (if it exists) to its original color
           if ( currentIntersectedObject )
-              currentIntersectedObject.children[13].material.color.setHex( currentIntersectedObject.currentHex );
+              resetHighlightedObject(currentIntersectedObject);
 
+          // change color of highlighted object
           currentIntersectedObject = intersects[ i ].object.parent;
           currentIntersectedObject.currentHex = currentIntersectedObject.children[13].material.color.getHex();
           currentIntersectedObject.children[13].material.color.setHex( 0x000000 );
+          
           showToolTip(mouse, currentIntersectedObject.data);
-          highlightPoints(currentIntersectedObject.data.index);
           break;
         }
 
       }
     }
 
-
-
   } else {
     if ( currentIntersectedObject )
-        currentIntersectedObject.children[13].material.color.setHex( currentIntersectedObject.currentHex );
+      resetHighlightedObject(currentIntersectedObject);
     currentIntersectedObject = null;
   }
 
+}
+
+function resetHighlightedObject(highlightedObject) {
+  highlightedObject.children[13].material.color.setHex( currentIntersectedObject.currentHex );
+  removeHighlightPoints();
 }
 
 function showToolTip(mouse, data) {
@@ -64,6 +68,9 @@ function showToolTip(mouse, data) {
   getTableHTML(tooltipTable, data);
 
   tooltip.style.display = 'block';
+
+  // highlight pointcloud for current pose
+  highlightPoints(data.index);
 }
 
 function hideToolTip() {
@@ -93,6 +100,27 @@ function getTableHTML(parent, data) {
 }
 
 function highlightPoints(index) {
+
+  let dotGeometry = new THREE.Geometry();
+  let dotMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: false, color: '#ff0000' } );
+
   let selectedPoints = points.filter(point => point.measurements.some(measurement => measurement[0]==index))
-  console.log(selectedPoints);
+  selectedPoints.map(point =>
+    dotGeometry.vertices.push(new THREE.Vector3(
+                                  point.position.x - initialPosition.x,
+                                  point.position.z - initialPosition.z,
+                                  point.position.y - initialPosition.y )));
+
+  let dot = new THREE.Points( dotGeometry, dotMaterial );
+  dot.name = 'highlightedPoints'
+  scene.add( dot );
+
+}
+
+function removeHighlightPoints() {
+
+  let highlightedPoints = scene.getObjectByName('highlightedPoints');
+  console.log(highlightPoints);
+  scene.remove(highlightedPoints);
+
 }
