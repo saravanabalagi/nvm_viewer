@@ -38,7 +38,7 @@ function update() {
           currentIntersectedObject = intersects[ i ].object.parent;
           currentIntersectedObject.currentHex = currentIntersectedObject.children[13].material.color.getHex();
           currentIntersectedObject.children[13].material.color.setHex( 0x000000 );
-          
+
           showToolTip(mouse, currentIntersectedObject.data);
           break;
         }
@@ -101,8 +101,35 @@ function getTableHTML(parent, data) {
 
 function highlightPoints(index) {
 
+  let texture = new THREE.TextureLoader().load( 'js/viridis.png' );
   let dotGeometry = new THREE.Geometry();
-  let dotMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: false, color: '#ff0000' } );
+
+  let dotMaterial = new THREE.ShaderMaterial( {
+    uniforms: {
+      map: { value: texture },
+      width: { value: innerWidth },
+      height: { value: innerHeight },
+      normX: { value: maxXYZ.x - minXYZ.x },
+      normY: { value: maxXYZ.y - minXYZ.y },
+      normZ: { value: maxXYZ.z - minXYZ.z },
+    },
+    vertexShader: document.getElementById( 'vs' ).textContent,
+		fragmentShader: document.getElementById( 'fs' ).textContent,
+  } );
+
+  // let dotMaterial = new THREE.ShaderMaterial( {
+  //   uniforms: {
+  //     map: texture,
+  //     width: window.width,
+  //     height: window.height,
+  //     pointSize: 2,
+  //     zOffset: 1000,
+  //     nearClipping: 850,
+  //     farClipping: 4000
+  //   },
+  //   vertexShader: document.getElementById( 'vs' ).textContent,
+	// 	fragmentShader: document.getElementById( 'fs' ).textContent,
+  // } );
 
   let selectedPoints = points.filter(point => point.measurements.some(measurement => measurement[0]==index))
   selectedPoints.map(point =>
@@ -112,6 +139,7 @@ function highlightPoints(index) {
                                   point.position.y - initialPosition.y )));
 
   let dot = new THREE.Points( dotGeometry, dotMaterial );
+  // console.log(dotGeometry.vertices);
   dot.name = 'highlightedPoints'
   scene.add( dot );
 
@@ -120,7 +148,6 @@ function highlightPoints(index) {
 function removeHighlightPoints() {
 
   let highlightedPoints = scene.getObjectByName('highlightedPoints');
-  console.log(highlightPoints);
   scene.remove(highlightedPoints);
 
 }

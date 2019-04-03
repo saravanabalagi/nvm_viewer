@@ -3,6 +3,8 @@ const cameraRotationOffset = -45;
 
 var points = [];
 var cameras = [];
+var minXYZ = null;
+var maxXYZ = null;
 
 var initialPosition = null;
 
@@ -144,6 +146,22 @@ function loadFile(fileUrl) {
           points.push({position, color, measurements, index: i});
 
         });
+
+        maxXYZ = points.reduce((max, point) => {
+          if(point.position.x > max.x) max.x = point.position.x;
+          if(point.position.y > max.y) max.y = point.position.y;
+          if(point.position.z > max.z) max.z = point.position.z;
+          return max;
+        }, {x: -999, y: -999, z: -999});
+
+        minXYZ = points.reduce((min, point) => {
+          if(point.position.x < min.x) min.x = point.position.x;
+          if(point.position.y < min.y) min.y = point.position.y;
+          if(point.position.z < min.z) min.z = point.position.z;
+          return min;
+        }, {x: 999, y: 999, z: 999});
+
+        console.log(maxXYZ, minXYZ);
 
         let dot = new THREE.Points( dotGeometry, dotMaterial );
         scene.add( dot );
