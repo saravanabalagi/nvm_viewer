@@ -161,20 +161,6 @@ function loadFile(fileUrl) {
 
         });
 
-        // calculate 90th percentile
-        pointsArray = {xPoints: [], yPoints: [], zPoints: []};
-        points.map(point => {
-            pointsArray.xPoints.push(Math.abs(point.displayPosition.x));
-            pointsArray.yPoints.push(Math.abs(point.displayPosition.y));
-            pointsArray.zPoints.push(Math.abs(point.displayPosition.z));
-        });
-        normXYZ = {
-          x: percentile(pointsArray.xPoints, 0.99999),
-          y: percentile(pointsArray.yPoints, 0.99999),
-          z: percentile(pointsArray.zPoints, 0.99999),
-        }
-        console.log({normXYZ});
-
         let dot = new THREE.Points( dotGeometry, dotMaterial );
         dot.name = 'pointCloud';
         scene.add( dot );
@@ -182,15 +168,3 @@ function loadFile(fileUrl) {
     });
 
 }
-
-const percentile = (arr, q) => {
-    const sorted = arr.sort();
-    const pos = ((sorted.length) - 1) * q;
-    const base = Math.floor(pos);
-    const rest = pos - base;
-    if ((sorted[base + 1] !== undefined)) {
-        return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
-    } else {
-        return sorted[base];
-    }
-};

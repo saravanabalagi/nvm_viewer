@@ -114,21 +114,30 @@ function highlightPoints(data) {
   let texture = new THREE.TextureLoader().load( 'js/viridis.png' );
   let dotGeometry = new THREE.Geometry();
 
-
-
   let selectedPoints = points.filter(point => point.measurements.some(measurement => measurement[0]==data.index))
-  let localMax = selectedPoints.reduce((max, point) => {
+  selectedPoints.map(point =>
     dotGeometry.vertices.push(new THREE.Vector3(
                                   point.displayPosition.x,
                                   point.displayPosition.y,
-                                  point.displayPosition.z));
-    if ( Math.abs(point.displayPosition.x) > max.x ) max.x = Math.abs(point.displayPosition.x);
-    if ( Math.abs(point.displayPosition.y) > max.y ) max.y = Math.abs(point.displayPosition.y);
-    if ( Math.abs(point.displayPosition.z) > max.z ) max.z = Math.abs(point.displayPosition.z);
-    return max;
-  }, { x: null, y: null, z: null });
+                                  point.displayPosition.z)));
 
-  // check outlier ratio
+  // calculate 90th percentile
+  let pointsArray = {xPoints: [], yPoints: [], zPoints: []};
+  selectedPoints.map(point => {
+      pointsArray.xPoints.push(Math.abs(point.displayPosition.x));
+      pointsArray.yPoints.push(Math.abs(point.displayPosition.y));
+      pointsArray.zPoints.push(Math.abs(point.displayPosition.z));
+  });
+  let localMax = {
+    x: percentile(pointsArray.xPoints, 0.9),
+    y: percentile(pointsArray.yPoints, 0.9),
+    z: percentile(pointsArray.zPoints, 0.9),
+  }
+
+  // let zMax = Math.max(...selectedPoints.map(point => Math.abs(point.displayPosition.z)));
+  // console.log({localMax, zMax});
+
+  // // check outlier ratio
   // outliers = selectedPoints.map(point => {
   //   if(Math.abs(point.displayPosition.z / localMax.z) > 1) return point;
   // }).filter(e => e!=null);
@@ -162,3 +171,17 @@ function removeHighlightPoints() {
   scene.remove(highlightedPoints);
 
 }
+
+function percentile(arr, p) {
+
+    // Dont remove the callback
+    // https://stackoverflow.com/q/55523587/3125070
+    arr.sort((a,b)=>a-b);
+
+    const pos = (arr.length - 1) * p;
+    const base = Math.floor(pos);
+    const rest = pos - base;
+    if ((arr[base + 1] !== undefined))
+        return arr[base] + rest * (arr[base + 1] - arr[base]);
+    else return arr[base];
+};
