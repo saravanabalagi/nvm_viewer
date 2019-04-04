@@ -37,23 +37,10 @@
 			uniform float normX;
 			uniform float normY;
 			uniform float normZ;
-			// uniform float nearClipping, farClipping;
-			// uniform float pointSize;
-			// uniform float zOffset;
+
 			varying vec2 vUv;
-			const float XtoZ = 1.11146; // tan( 1.0144686 / 2.0 ) * 2.0;
-			const float YtoZ = 0.83359; // tan( 0.7898090 / 2.0 ) * 2.0;
 			void main() {
-				vUv = vec2( abs(position.x) / width, position.y);
-				// vec4 color = texture2D( map, vUv );
-				// float depth = ( color.r + color.g + color.b ) / 3.0;
-				// // Projection code by @kcmic
-				// float z = ( 1.0 - depth ) * (farClipping - nearClipping) + nearClipping;
-				// vec4 pos = vec4(
-				// 	( position.x / width - 0.5 ) * z * XtoZ,
-				// 	( position.y / height - 0.5 ) * z * YtoZ,
-				// 	- z + zOffset,
-				// 	1.0);
+				vUv = vec2( abs(position.y) / normY * 2.0 , 1.0);
 				gl_PointSize = 5.0;
 				vec4 pos = vec4(position, 1.0);
 				gl_Position = projectionMatrix * modelViewMatrix * pos;
@@ -67,7 +54,7 @@
 				vec4 color = texture2D( map, vUv );
 				gl_FragColor = vec4( color.r, color.g, color.b, 1.0 );
 				if(vUv[0] < -1.0 || vUv[0] > 1.0) {
-					gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );
+					gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
 				}
 
 			}

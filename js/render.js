@@ -1,31 +1,17 @@
 // scene
 var scene = new THREE.Scene();
 scene.background = new THREE.Color( 0xcccccc );
-scene.fog = new THREE.FogExp2( 0xcccccc, 0.0002 );
+// scene.fog = new THREE.FogExp2( 0xcccccc, 0.0002 );
 
 // camera
 camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
 camera.position.set( 60, 50, 60 );
 
-// load from folder once car model is loaded
-const folderLocation = 'http://localhost:8000/data';
-const filename = 'slice5.nvm';
-
-function loadModel() { loadFile(folderLocation + '/' + filename); }
-
-// car
-var car = null;
-var manager = new THREE.LoadingManager( loadModel );
-var loader = new THREE.OBJLoader( manager );
-
-// loader.load( 'js/car.obj', function ( obj ) { car = obj }, onProgress, onError );
-loader.load( 'js/car.obj', function ( obj ) {
-	car = obj;
-}, () => {}, () => {} );
-
 // renderer
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.domElement.id = 'canvas';
+renderer.domElement.addEventListener('contextmenu', pinObject);
 document.body.appendChild( renderer.domElement );
 
 // controls
@@ -58,6 +44,11 @@ grid.material.opacity = 0.2;
 grid.material.transparent = true;
 scene.add( grid );
 
+// axis helper
+var axesHelper = new THREE.AxesHelper( 5 );
+axesHelper.name = 'axesHelper';
+scene.add( axesHelper );
+
 // lights
 var light = new THREE.DirectionalLight( 0xffffff );
 light.position.set( 1, 1, 1 );
@@ -65,6 +56,17 @@ scene.add( light );
 
 var light = new THREE.AmbientLight( 0x222222 );
 scene.add( light );
+
+// load from folder once car model is loaded
+const folderLocation = 'http://localhost:8000/data';
+const filename = 'slice5.nvm';
+function loadModel() { loadFile(folderLocation + '/' + filename); }
+
+// car
+var car = null;
+var manager = new THREE.LoadingManager( loadModel );
+var loader = new THREE.OBJLoader( manager );
+loader.load( 'js/car.obj', obj => car = obj );
 
 // animation varibales
 var xAnimate = 0;

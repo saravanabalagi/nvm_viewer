@@ -71,6 +71,7 @@ function loadFile(fileUrl) {
           if(!initialPosition)
             position = initialPosition;
 
+          // swap y and z for display
           mesh.position.x = x - initialPosition.x;
           mesh.position.y = z - initialPosition.z;
           mesh.position.z = y - initialPosition.y;
@@ -92,14 +93,15 @@ function loadFile(fileUrl) {
           camera.position.x = mesh.position.x
           camera.position.y = mesh.position.y
           camera.position.z = mesh.position.z
+
           camera.rotation.x = mesh.rotation.x
-          camera.rotation.z = mesh.rotation.z
           camera.rotation.y = mesh.rotation.y + ( cameraRotationOffset * Math.PI / 180 )
+          camera.rotation.z = mesh.rotation.z
 
           camera.name = 'carCamera';
           cameraHelper.name = 'carCameraHelper';
-          scene.add( camera );
-          scene.add( cameraHelper );
+          // scene.add( camera );
+          // scene.add( cameraHelper );
 
           // Add to global cameras
           cameras.push({position, rotationEuler, focalLength: fl, index: i});
@@ -110,7 +112,7 @@ function loadFile(fileUrl) {
         console.log({numberOfPoints});
 
         let dotGeometry = new THREE.Geometry();
-        let dotMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: false } );
+        let dotMaterial = new THREE.PointsMaterial( { size: 2, sizeAttenuation: false } );
 
         const pointIndex = cameraIndex + numberOfCameras + 1
         let pointsInFile = dataLines.slice(pointIndex, pointIndex + numberOfPoints);
@@ -123,6 +125,13 @@ function loadFile(fileUrl) {
           let y = params[1];
           let z = params[2];
           let position = {x, y, z};
+
+          // Swap z and y for display
+          let displayPosition = {
+            x: x - initialPosition.x,
+            y: z - initialPosition.z,
+            z: y - initialPosition.y
+          }
 
           // parse rgb
           let r = params[3];
@@ -140,30 +149,32 @@ function loadFile(fileUrl) {
             measurements.push(measurementsList.slice(i*4, i*4 + 4));
 
           // create dot to display
-          dotGeometry.vertices.push(new THREE.Vector3( x - initialPosition.x, z - initialPosition.z, y - initialPosition.y ));
+          dotGeometry.vertices.push(new THREE.Vector3(...Object.values(displayPosition)));
 
           // Add to global points
-          points.push({position, color, measurements, index: i});
+          points.push({position, color, measurements, index: i, displayPosition});
 
         });
 
         maxXYZ = points.reduce((max, point) => {
-          if(point.position.x > max.x) max.x = point.position.x;
-          if(point.position.y > max.y) max.y = point.position.y;
-          if(point.position.z > max.z) max.z = point.position.z;
+          if(point.displayPosition.x > max.x) max.x = point.displayPosition.x;
+          if(point.displayPosition.y > max.y) max.y = point.displayPosition.y;
+          if(point.displayPosition.z > max.z) max.z = point.displayPosition.z;
           return max;
         }, {x: -999, y: -999, z: -999});
 
         minXYZ = points.reduce((min, point) => {
-          if(point.position.x < min.x) min.x = point.position.x;
-          if(point.position.y < min.y) min.y = point.position.y;
-          if(point.position.z < min.z) min.z = point.position.z;
+          if(point.displayPosition.x < min.x) min.x = point.displayPosition.x;
+          if(point.displayPosition.y < min.y) min.y = point.displayPosition.y;
+          if(point.displayPosition.z < min.z) min.z = point.displayPosition.z;
           return min;
         }, {x: 999, y: 999, z: 999});
 
+        console.log(dotGeometry.vertices);
         console.log(maxXYZ, minXYZ);
 
         let dot = new THREE.Points( dotGeometry, dotMaterial );
+        dot.name = 'pointCloud';
         scene.add( dot );
 
     });
