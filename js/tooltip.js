@@ -75,7 +75,7 @@ function showToolTip(mouse, data) {
   tooltip.style.display = 'block';
 
   // highlight pointcloud for current pose
-  highlightPoints(data.index);
+  highlightPoints(data);
 }
 
 function hideToolTip() {
@@ -86,6 +86,11 @@ function hideToolTip() {
 // Fill table recursively parsing data
 function getTableHTML(parent, data) {
   Object.keys(data).map(key => {
+
+    // skip if display is none
+    if(key === 'display' && data[key] === 'none')
+      return;
+
     let trNode = document.createElement('tr');
 
     let tdLabelNode = document.createElement('td');
@@ -104,35 +109,46 @@ function getTableHTML(parent, data) {
   });
 }
 
-function highlightPoints(index) {
+function highlightPoints(data) {
 
   let texture = new THREE.TextureLoader().load( 'js/viridis.png' );
   let dotGeometry = new THREE.Geometry();
 
-  outliers = points.map(point => {
-    if(Math.abs(point.displayPosition.y / normXYZ.y) > 1) return point;
-  }).filter(e => e!=null).reduce((arr, e) => [...arr, ...e.measurements.reduce((r, m) => [...r, m[0]], [])], []);
-  console.log(outliers.length, points.length);
+
+
+  let selectedPoints = points.filter(point => point.measurements.some(measurement => measurement[0]==data.index))
+  let localMax = selectedPoints.reduce((max, point) => {
+    dotGeometry.vertices.push(new THREE.Vector3(
+                                  point.displayPosition.x,
+                                  point.displayPosition.y,
+                                  point.displayPosition.z));
+    if ( Math.abs(point.displayPosition.x) > max.x ) max.x = Math.abs(point.displayPosition.x);
+    if ( Math.abs(point.displayPosition.y) > max.y ) max.y = Math.abs(point.displayPosition.y);
+    if ( Math.abs(point.displayPosition.z) > max.z ) max.z = Math.abs(point.displayPosition.z);
+    return max;
+  }, { x: null, y: null, z: null });
+
+  // check outlier ratio
+  // outliers = selectedPoints.map(point => {
+  //   if(Math.abs(point.displayPosition.z / localMax.z) > 1) return point;
+  // }).filter(e => e!=null);
+  // console.log(outliers.length, selectedPoints.length);
 
   let dotMaterial = new THREE.ShaderMaterial( {
     uniforms: {
       map: { value: texture },
       width: { value: innerWidth },
       height: { value: innerHeight },
-      normX: { value: normXYZ.x },
-      normY: { value: normXYZ.y },
-      normZ: { value: normXYZ.z },
+      normX: { value: localMax.x },
+      normY: { value: localMax.y },
+      normZ: { value: localMax.z },
+      currentX: { value: data.displayPosition.x },
+      currentY: { value: data.displayPosition.y },
+      currentZ: { value: data.displayPosition.z },
     },
     vertexShader: document.getElementById( 'vs' ).textContent,
 		fragmentShader: document.getElementById( 'fs' ).textContent,
   } );
-
-  let selectedPoints = points.filter(point => point.measurements.some(measurement => measurement[0]==index))
-  selectedPoints.map(point =>
-    dotGeometry.vertices.push(new THREE.Vector3(
-                                  point.position.x - initialPosition.x,
-                                  point.position.z - initialPosition.z,
-                                  point.position.y - initialPosition.y )));
 
   let dot = new THREE.Points( dotGeometry, dotMaterial );
   dot.name = 'highlightedPoints'

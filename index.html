@@ -37,11 +37,14 @@
 			uniform float normX;
 			uniform float normY;
 			uniform float normZ;
+			uniform float currentX;
+			uniform float currentY;
+			uniform float currentZ;
 
 			varying vec2 vUv;
 			void main() {
-				vUv = vec2( abs(position.z) / normZ, 1.0);
-				gl_PointSize = 5.0;
+				vUv = vec2( abs(position.z - currentZ) / normZ, 1.0);
+				gl_PointSize = 3.0;
 				vec4 pos = vec4(position, 1.0);
 				gl_Position = projectionMatrix * modelViewMatrix * pos;
 			}
@@ -53,6 +56,8 @@
 			void main() {
 				vec4 color = texture2D( map, vUv );
 				gl_FragColor = vec4( color.r, color.g, color.b, 1.0 );
+
+				//for debugging, show in pixels in red
 				if(vUv[0] < -1.0 || vUv[0] > 1.0) {
 					gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
 				}

@@ -54,11 +54,18 @@ function loadFile(fileUrl) {
           let z = params[8];
           let position = {x, y, z};
 
-          let camera = new THREE.PerspectiveCamera( 10, 1, 10, 20 );
-          let cameraHelper = new THREE.CameraHelper( camera );
-
           if(initialPosition === null)
             initialPosition = position;
+
+          // swap y and z for display
+          let displayPosition = {
+            x: x - initialPosition.x,
+            y: z - initialPosition.z,
+            z: y - initialPosition.y
+          };
+
+          let camera = new THREE.PerspectiveCamera( 10, 1, 10, 20 );
+          let cameraHelper = new THREE.CameraHelper( camera );
 
           let mesh = car.clone();
 
@@ -70,10 +77,9 @@ function loadFile(fileUrl) {
           if(!initialPosition)
             position = initialPosition;
 
-          // swap y and z for display
-          mesh.position.x = x - initialPosition.x;
-          mesh.position.y = z - initialPosition.z;
-          mesh.position.z = y - initialPosition.y;
+          mesh.position.x = displayPosition.x;
+          mesh.position.y = displayPosition.y;
+          mesh.position.z = displayPosition.z;
 
           // mesh.rotation.x = rotationEuler.x
           // mesh.rotation.z = rotationEuler.z
@@ -83,7 +89,7 @@ function loadFile(fileUrl) {
           mesh.updateMatrix();
           mesh.matrixAutoUpdate = false;
 
-          mesh.data = {focalLength: fl, position, rotationEuler, index: i};
+          mesh.data = {focalLength: fl, position, displayPosition, rotationEuler, index: i};
 
           mesh.name = 'car';
           scene.add( mesh );
@@ -103,7 +109,7 @@ function loadFile(fileUrl) {
           // scene.add( cameraHelper );
 
           // Add to global cameras
-          cameras.push({position, rotationEuler, focalLength: fl, index: i});
+          cameras.push({position, displayPosition, rotationEuler, focalLength: fl, index: i, });
 
         });
 
@@ -163,9 +169,9 @@ function loadFile(fileUrl) {
             pointsArray.zPoints.push(Math.abs(point.displayPosition.z));
         });
         normXYZ = {
-          x: percentile(pointsArray.xPoints, 0.9999),
-          y: percentile(pointsArray.yPoints, 0.9999),
-          z: percentile(pointsArray.zPoints, 0.9999),
+          x: percentile(pointsArray.xPoints, 0.99999),
+          y: percentile(pointsArray.yPoints, 0.99999),
+          z: percentile(pointsArray.zPoints, 0.99999),
         }
         console.log({normXYZ});
 
