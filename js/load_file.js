@@ -3,8 +3,7 @@ const cameraRotationOffset = -45;
 
 var points = [];
 var cameras = [];
-var minXYZ = null;
-var maxXYZ = null;
+var normXYZ = null;
 
 var initialPosition = null;
 
@@ -156,22 +155,19 @@ function loadFile(fileUrl) {
 
         });
 
-        maxXYZ = points.reduce((max, point) => {
-          if(point.displayPosition.x > max.x) max.x = point.displayPosition.x;
-          if(point.displayPosition.y > max.y) max.y = point.displayPosition.y;
-          if(point.displayPosition.z > max.z) max.z = point.displayPosition.z;
-          return max;
-        }, {x: -999, y: -999, z: -999});
-
-        minXYZ = points.reduce((min, point) => {
-          if(point.displayPosition.x < min.x) min.x = point.displayPosition.x;
-          if(point.displayPosition.y < min.y) min.y = point.displayPosition.y;
-          if(point.displayPosition.z < min.z) min.z = point.displayPosition.z;
-          return min;
-        }, {x: 999, y: 999, z: 999});
-
-        console.log(dotGeometry.vertices);
-        console.log(maxXYZ, minXYZ);
+        // calculate 90th percentile
+        pointsArray = {xPoints: [], yPoints: [], zPoints: []};
+        points.map(point => {
+            pointsArray.xPoints.push(Math.abs(point.displayPosition.x));
+            pointsArray.yPoints.push(Math.abs(point.displayPosition.y));
+            pointsArray.zPoints.push(Math.abs(point.displayPosition.z));
+        });
+        normXYZ = {
+          x: percentile(pointsArray.xPoints, 0.9999),
+          y: percentile(pointsArray.yPoints, 0.9999),
+          z: percentile(pointsArray.zPoints, 0.9999),
+        }
+        console.log({normXYZ});
 
         let dot = new THREE.Points( dotGeometry, dotMaterial );
         dot.name = 'pointCloud';
@@ -180,3 +176,15 @@ function loadFile(fileUrl) {
     });
 
 }
+
+const percentile = (arr, q) => {
+    const sorted = arr.sort();
+    const pos = ((sorted.length) - 1) * q;
+    const base = Math.floor(pos);
+    const rest = pos - base;
+    if ((sorted[base + 1] !== undefined)) {
+        return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+    } else {
+        return sorted[base];
+    }
+};

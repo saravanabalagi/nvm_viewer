@@ -110,18 +110,18 @@ function highlightPoints(index) {
   let dotGeometry = new THREE.Geometry();
 
   outliers = points.map(point => {
-    if(Math.abs(point.displayPosition.y / maxXYZ.y * 2) > 1) return point;
-  }).filter(e => e!=null);
-  console.log({outliers});
+    if(Math.abs(point.displayPosition.y / normXYZ.y) > 1) return point;
+  }).filter(e => e!=null).reduce((arr, e) => [...arr, ...e.measurements.reduce((r, m) => [...r, m[0]], [])], []);
+  console.log(outliers.length, points.length);
 
   let dotMaterial = new THREE.ShaderMaterial( {
     uniforms: {
       map: { value: texture },
       width: { value: innerWidth },
       height: { value: innerHeight },
-      normX: { value: maxXYZ.x },
-      normY: { value: maxXYZ.y },
-      normZ: { value: maxXYZ.z },
+      normX: { value: normXYZ.x },
+      normY: { value: normXYZ.y },
+      normZ: { value: normXYZ.z },
     },
     vertexShader: document.getElementById( 'vs' ).textContent,
 		fragmentShader: document.getElementById( 'fs' ).textContent,
