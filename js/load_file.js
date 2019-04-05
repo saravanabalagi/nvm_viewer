@@ -40,18 +40,18 @@ function loadFile(fileUrl) {
           let params = cameraLine.split(' ');
 
           let image = params[0];
-          let fl = params[1];
+          let fl = parseFloat(params[1]);
 
-          let rw = params[2];
-          let rx = params[3];
-          let ry = params[4];
-          let rz = params[5];
+          let rw = parseFloat(params[2]);
+          let rx = parseFloat(params[3]);
+          let ry = parseFloat(params[4]);
+          let rz = parseFloat(params[5]);
           let rotation = new Quaternion(rw, rx, ry, rz);
           let rotationEuler = rotation.toEuler();
 
-          let x = params[6];
-          let y = params[7];
-          let z = params[8];
+          let x = parseFloat(params[6]);
+          let y = parseFloat(params[7]);
+          let z = parseFloat(params[8]);
           let position = {x, y, z};
 
           if(initialPosition === null)
@@ -126,9 +126,9 @@ function loadFile(fileUrl) {
           let params = pointLine.split(' ');
 
           // parse xyz
-          let x = params[0];
-          let y = params[1];
-          let z = params[2];
+          let x = parseFloat(params[0]);
+          let y = parseFloat(params[1]);
+          let z = parseFloat(params[2]);
           let position = {x, y, z};
 
           // Swap z and y for display
@@ -139,9 +139,9 @@ function loadFile(fileUrl) {
           }
 
           // parse rgb
-          let r = params[3];
-          let g = params[4];
-          let b = params[5];
+          let r = parseFloat(params[3]);
+          let g = parseFloat(params[4]);
+          let b = parseFloat(params[5]);
           let color = {r, g, b};
 
           // parse number of measurements

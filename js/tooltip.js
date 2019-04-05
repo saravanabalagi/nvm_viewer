@@ -99,7 +99,9 @@ function getTableHTML(parent, data) {
       tdValueNode.className += 'subcontent';
       getTableHTML(tdValueNode, data[key]);
     }
-    else tdValueNode.innerHTML = data[key];
+    else
+      if(typeof(data[key]) === 'number') tdValueNode.innerHTML = Math.round(data[key] * 1000000) / 1000000;
+      else tdValueNode.innerHTML = data[key];
     trNode.appendChild(tdValueNode);
 
     parent.appendChild(trNode);
