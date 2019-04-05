@@ -2,7 +2,9 @@ var mouse = { x: 0, y: 0 };
 var currentIntersectedObject;
 
 var isPinned = false;
+var isRightClickAndDragged = false;
 function pinObject() { isPinned = !isPinned; }
+function rightClickAndDragged() { isRightClickAndDragged = true; }
 
 document.addEventListener('mousemove', onDocumentMouseMove, false);
 function onDocumentMouseMove(event) {

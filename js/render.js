@@ -11,7 +11,29 @@ camera.position.set( 60, 50, 60 );
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.domElement.id = 'canvas';
-renderer.domElement.addEventListener('contextmenu', pinObject);
+
+// right click to pin, but not during right click and drag
+// https://stackoverflow.com/a/45098107/3125070
+renderer.domElement.addEventListener('mousedown', (e) => {
+	if(e.button === 2)  // if right clicked
+		renderer.domElement.addEventListener('mousemove', rightClickAndDragged);
+});
+const preventClick = (e) => {
+	e.preventDefault();
+	e.stopImmediatePropagation();
+}
+renderer.domElement.addEventListener('mouseup', e => {
+	if(e.button === 2) {
+		if(isRightClickAndDragged) e.target.addEventListener('contextmenu', preventClick);
+		else {
+			e.target.removeEventListener('contextmenu', preventClick);
+			pinObject();
+		}
+		isRightClickAndDragged = false;
+		renderer.domElement.removeEventListener('mousemove', rightClickAndDragged);
+	}
+})
+
 document.body.appendChild( renderer.domElement );
 
 // controls
