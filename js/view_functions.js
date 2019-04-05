@@ -68,3 +68,8 @@ function toggleClass(domElementClassName, classNameToAdd) {
 function toggleZoomView() { toggleClass('image-panel', 'small'); }
 function toggleImageView() { toggleClass('image-panel', 'hide'); }
 function toggleViewPosition() { toggleClass('image-panel', 'right'); }
+
+function openImage() {
+  let img = document.getElementById('camera-image');
+  window.open(img.src);
+}
