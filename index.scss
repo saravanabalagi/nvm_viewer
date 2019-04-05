@@ -13,8 +13,10 @@ canvas {
 
 .main-ui {
   position: fixed;
-  top: 0; left: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   margin: 10px;
+  pointer-events: none;
+  > * { pointer-events: auto; }
 
   table.table {
     width: inherit;
@@ -65,6 +67,9 @@ canvas {
   }
 
   .image-panel {
+    position: absolute;
+    right: 5px; top: 5px;
+
     img#camera-image {
       width: 400px;
       height: auto;

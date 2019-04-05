@@ -114,8 +114,8 @@ function loadFile(fileUrl) {
 
           camera.name = 'carCamera';
           cameraHelper.name = 'carCameraHelper';
-          scene.add( camera );
-          scene.add( cameraHelper );
+          // scene.add( camera );
+          // scene.add( cameraHelper );
 
           // Add to global cameras
           cameras.push(mesh.data);
@@ -125,7 +125,7 @@ function loadFile(fileUrl) {
         const numberOfPoints = parseInt(dataLines[cameraIndex + numberOfCameras].split(' ')[0]);
 
         let dotGeometry = new THREE.Geometry();
-        let dotMaterial = new THREE.PointsMaterial( { size: 2, sizeAttenuation: false } );
+        let dotMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: false } );
 
         const pointIndex = cameraIndex + numberOfCameras + 1;
         let pointsInFile = dataLines.slice(pointIndex, pointIndex + numberOfPoints);

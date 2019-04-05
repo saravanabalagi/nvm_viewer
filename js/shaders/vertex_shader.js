@@ -11,7 +11,7 @@ uniform float currentZ;
 varying vec2 vUv;
 void main() {
   vUv = vec2( abs(position.z - currentZ) / normZ, 1.0);
-  gl_PointSize = 3.0;
+  gl_PointSize = 2.0;
   vec4 pos = vec4(position, 1.0);
   gl_Position = projectionMatrix * modelViewMatrix * pos;
 }
