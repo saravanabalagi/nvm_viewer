@@ -77,7 +77,7 @@ function showToolTip(mouse, data) {
 
 function hideToolTip() {
   let tooltip = document.getElementsByClassName('info-tooltip')[0];
-  tooltip.classList.add('hide')
+  tooltip.classList.add('hide');
 }
 
 
@@ -146,8 +146,20 @@ function removeHighlightPoints() {
 
 function showImage(data) {
   let camera = cameras.filter(cam => cam.index === data.index)[0];
+
+  let imagePanel = document.getElementsByClassName('image-panel')[0];
+  if(imagePanel.classList.contains('no-image')) imagePanel.classList.remove('no-image');
+
   let domImg = document.getElementById('camera-image');
   domImg.src = '/data/slice5/' + camera.image.value;
+}
+
+function hideImage() {
+  let imagePanel = document.getElementsByClassName('image-panel')[0];
+  if(!imagePanel.classList.contains('no-image')) imagePanel.classList.add('no-image');
+
+  let domImg = document.getElementById('camera-image');
+  domImg.src = '';
 }
 
 function percentile(arr, p) {
