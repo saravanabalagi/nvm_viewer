@@ -67,14 +67,60 @@ canvas {
   }
 
   .image-panel {
-    position: absolute;
-    right: 5px; top: 5px;
 
     img#camera-image {
       width: 400px;
       height: auto;
       border-radius: 5px;
       > .not-loaded { display: none; }
+    }
+
+    &.right {
+      text-align: right;
+      position: absolute;
+      top: 5px; right: 5px;
+      .image-panel-buttons #toggleViewPosition {
+        > i.fa-arrow-right { display: none; }
+        > i.fa-arrow-left { display: inline; }
+      }
+    }
+
+    &.small {
+      img#camera-image { width: 200px; }
+      .image-panel-buttons #toggleZoomView {
+        > i.fa-search-minus { display: none; }
+        > i.fa-search-plus { display: inline; }
+      }
+    }
+
+    &.hide {
+      img#camera-image { display: none; }
+      .image-panel-buttons div:not(#toggleImageView) { display: none; }
+      .image-panel-buttons #toggleImageView {
+        > i.fa-eye-slash { display: none; }
+        > i.fa-eye { display: inline; }
+      }
+    }
+
+    .image-panel-buttons {
+
+      margin-bottom: 5px;
+
+      #toggleZoomView {
+        > i.fa-search-minus { display: inline; }
+        > i.fa-search-plus { display: none; }
+      }
+
+      #toggleImageView {
+        > i.fa-eye-slash { display: inline; }
+        > i.fa-eye { display: none; }
+      }
+
+      #toggleViewPosition {
+        > i.fa-arrow-right { display: inline; }
+        > i.fa-arrow-left { display: none; }
+      }
+
     }
   }
 

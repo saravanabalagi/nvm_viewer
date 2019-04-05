@@ -1,6 +1,8 @@
 var isPinned = false;
 var isRightClickAndDragged = false;
 
+reloadLoadViewButton();
+
 function rightClickAndDragged() { isRightClickAndDragged = true; }
 
 function pinObject() {
@@ -57,4 +59,12 @@ function getCookie(cname) {
   return "";
 }
 
-reloadLoadViewButton();
+function toggleClass(domElementClassName, classNameToAdd) {
+  let domElement = document.getElementsByClassName(domElementClassName)[0];
+  if(domElement.classList.contains(classNameToAdd)) domElement.classList.remove(classNameToAdd);
+  else domElement.classList.add(classNameToAdd);
+}
+
+function toggleZoomView() { toggleClass('image-panel', 'small'); }
+function toggleImageView() { toggleClass('image-panel', 'hide'); }
+function toggleViewPosition() { toggleClass('image-panel', 'right'); }
