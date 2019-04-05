@@ -1,5 +1,5 @@
-const meshRotationOffset = 45;
-const cameraRotationOffset = -45;
+const meshRotationOffset = -45 + 180;
+const cameraRotationOffset = 45;
 
 var points = [];
 var cameras = [];
@@ -60,7 +60,7 @@ function loadFile(fileUrl) {
           let displayPosition = {
             x: x - initialPosition.x,
             y: z - initialPosition.z,
-            z: y - initialPosition.y
+            z: -(y - initialPosition.y)
           };
 
           let camera = new THREE.PerspectiveCamera( 10, 1, 10, 20 );
@@ -82,7 +82,7 @@ function loadFile(fileUrl) {
 
           // mesh.rotation.x = rotationEuler.x
           // mesh.rotation.z = rotationEuler.z
-          mesh.rotation.y = rotationEuler.y + (meshRotationOffset * Math.PI / 180)
+          mesh.rotation.y = -rotationEuler.y + (meshRotationOffset * Math.PI / 180)
           // console.log(rotationEuler);
 
           mesh.updateMatrix();
@@ -109,13 +109,13 @@ function loadFile(fileUrl) {
           camera.position.z = mesh.position.z
 
           camera.rotation.x = mesh.rotation.x
-          camera.rotation.y = mesh.rotation.y + ( cameraRotationOffset * Math.PI / 180 )
+          camera.rotation.y = -mesh.rotation.y + ( cameraRotationOffset * Math.PI / 180 )
           camera.rotation.z = mesh.rotation.z
 
           camera.name = 'carCamera';
           cameraHelper.name = 'carCameraHelper';
-          // scene.add( camera );
-          // scene.add( cameraHelper );
+          scene.add( camera );
+          scene.add( cameraHelper );
 
           // Add to global cameras
           cameras.push(mesh.data);
@@ -143,7 +143,7 @@ function loadFile(fileUrl) {
           let displayPosition = {
             x: x - initialPosition.x,
             y: z - initialPosition.z,
-            z: y - initialPosition.y
+            z: -(y - initialPosition.y)
           }
 
           // parse rgb
