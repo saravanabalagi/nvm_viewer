@@ -9,19 +9,23 @@ canvas {
 }
 
 #loadView { display: none; }
-.btn { margin-bottom: 7px; }
+.btn { margin: 5px; }
 
 .main-ui {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
   margin: 10px;
   pointer-events: none;
-  > * { pointer-events: auto; }
+  > * {
+    display: table;
+    pointer-events: auto;
+  }
 
   table.table {
     width: inherit;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 5px;
+    margin-bottom: 0;
 
     td, th { padding: 3px 0.75rem; }
     tr td:last-child { width: 200px; }
@@ -61,9 +65,7 @@ canvas {
   }
 
   .info-panel {
-    // position: absolute;
-    // right: 5px;
-    // top: 5px;
+    margin-bottom: 10px;
   }
 
   .image-panel {
