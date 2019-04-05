@@ -1,4 +1,19 @@
-function toggleAnimate() { shouldAnimate=!shouldAnimate; }
+var isPinned = false;
+var isRightClickAndDragged = false;
+
+function rightClickAndDragged() { isRightClickAndDragged = true; }
+
+function pinObject() {
+  isPinned = !isPinned;
+  if(isPinned) document.getElementById('pin').classList.remove('unpinned');
+  else document.getElementById('pin').classList.add('unpinned');
+}
+
+function toggleAnimate() {
+	shouldAnimate=!shouldAnimate;
+	if(shouldAnimate) document.getElementById('animate').classList.add('playing');
+  else document.getElementById('animate').classList.remove('playing');
+}
 
 function resetView() {
 	camera.position.set( 60, 50, 60 );

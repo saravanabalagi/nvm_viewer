@@ -12,12 +12,19 @@
 		<!-- ui start -->
 		<div class="main-ui">
 
-			<button type="button" class="btn btn-primary" onclick="toggleAnimate()">Toggle Animate</button>
-			<button type="button" class="btn btn-info" onclick="resetView()">Reset View</button>
-			<br />
-
-			<button type="button" class="btn btn-warning" id='saveView' onclick="saveView()">Save View</button>
-			<button type="button" class="btn btn-warning" id='loadView' onclick="loadView()">Load View</button>
+			<button type="button" class="btn btn-warning" id='saveView' onclick="saveView()">
+				<i class="fas fa-save"></i>
+			</button>
+			<button type="button" class="btn btn-warning" id='loadView' onclick="loadView()">
+				<i class="fas fa-download"></i>
+			</button>
+			<button type="button" class="btn btn-warning" onclick="resetView()">
+				<i class="fas fa-redo"></i>
+			</button>
+			<button type="button" class="btn btn-primary" id="animate" onclick="toggleAnimate()">
+				<i class="fas fa-play"></i>
+				<i class="fas fa-pause"></i>
+			</button>
 			<br />
 
 			<div class="info-panel">

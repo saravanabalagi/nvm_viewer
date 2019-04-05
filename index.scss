@@ -39,4 +39,13 @@ canvas {
     }
   }
 
+  #animate {
+    > i.fa-play { display: inline; }
+    > i.fa-pause { display: none; }
+    &.playing {
+      > i.fa-play { display: none; }
+      > i.fa-pause { display: inline; }
+    }
+  }
+
 }
