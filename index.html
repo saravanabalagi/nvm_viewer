@@ -43,41 +43,6 @@
 		</div>
 		<!-- ui end -->
 
-		<script id="vs" type="x-shader/x-vertex">
-			uniform sampler2D map;
-			uniform float width;
-			uniform float height;
-			uniform float normX;
-			uniform float normY;
-			uniform float normZ;
-			uniform float currentX;
-			uniform float currentY;
-			uniform float currentZ;
-
-			varying vec2 vUv;
-			void main() {
-				vUv = vec2( abs(position.z - currentZ) / normZ, 1.0);
-				gl_PointSize = 3.0;
-				vec4 pos = vec4(position, 1.0);
-				gl_Position = projectionMatrix * modelViewMatrix * pos;
-			}
-		</script>
-
-		<script id="fs" type="x-shader/x-fragment">
-			uniform sampler2D map;
-			varying vec2 vUv;
-			void main() {
-				vec4 color = texture2D( map, vUv );
-				gl_FragColor = vec4( color.r, color.g, color.b, 1.0 );
-
-				//for debugging, show in pixels in red
-				// if(vUv[0] < -1.0 || vUv[0] > 1.0) {
-					// gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
-				// }
-
-			}
-		</script>
-
 		<!-- scripts -->
 		<script src="js/three.js"></script>
 		<script src="js/quaternion.js"></script>
@@ -85,10 +50,12 @@
 		<script src="js/orbit_controls.js"></script>
 		<script src="js/obj_loader.js"></script>
 		<script src="js/webgl.js"></script>
+		<script src="js/view_functions.js"></script>
 		<script src="js/tooltip.js"></script>
 		<script src="js/render.js"></script>
+
+		<script src="js/shaders/load_shaders.js"></script>
 		<script src="js/load_file.js"></script>
-		<script src="js/view_functions.js"></script>
 		<!-- scripts end -->
 
 	</body>
