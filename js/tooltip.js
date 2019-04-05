@@ -42,6 +42,7 @@ function update() {
           currentIntersectedObject.children[13].material.color.setHex( 0x000000 );
 
           showToolTip(mouse, currentIntersectedObject.data);
+          showImage(currentIntersectedObject.data);
           break;
         }
 
@@ -67,9 +68,8 @@ function showToolTip(mouse, data) {
   let tooltipTable = tooltip.getElementsByClassName('table')[0];
 
   tooltipTable.innerHTML = '';
+  tooltip.classList.remove('hide');
   createTable(tooltipTable, data);
-
-  tooltip.style.display = 'block';
 
   // highlight pointcloud for current pose
   highlightPoints(data);
@@ -77,7 +77,7 @@ function showToolTip(mouse, data) {
 
 function hideToolTip() {
   let tooltip = document.getElementsByClassName('info-tooltip')[0];
-  tooltip.style.display = 'none';
+  tooltip.classList.add('hide')
 }
 
 
@@ -142,6 +142,12 @@ function removeHighlightPoints() {
   let highlightedPoints = scene.getObjectByName('highlightedPoints');
   scene.remove(highlightedPoints);
 
+}
+
+function showImage(data) {
+  let camera = cameras.filter(cam => cam.index === data.index)[0];
+  let domImg = document.getElementById('camera-image');
+  domImg.src = '/data/slice5/' + camera.image.value;
 }
 
 function percentile(arr, p) {

@@ -69,7 +69,7 @@ function loadFile(fileUrl) {
           let mesh = car.clone();
 
           // increase hue as the car moves forward
-          let hValue = i/(camerasInFile.length*1.5);
+          let hValue = i/(camerasInFile.length*10);
           let coloredMeshMaterial = new THREE.MeshPhongMaterial( { color: new THREE.Color().setHSL(hValue, 0.8, 0.7) } );
           mesh.children.filter(e => e.name=='Body_Plane')[0].material = coloredMeshMaterial;
 
@@ -88,7 +88,17 @@ function loadFile(fileUrl) {
           mesh.updateMatrix();
           mesh.matrixAutoUpdate = false;
 
-          mesh.data = {focalLength: fl, position, displayPosition, rotationEuler, index: i};
+          mesh.data = {
+            focalLength: fl,
+            position,
+            displayPosition,
+            rotationEuler,
+            index: i,
+            image: {
+              display: 'none',
+              value: image
+            }
+          };
 
           mesh.name = 'car';
           scene.add( mesh );
@@ -108,7 +118,7 @@ function loadFile(fileUrl) {
           // scene.add( cameraHelper );
 
           // Add to global cameras
-          cameras.push({position, displayPosition, rotationEuler, focalLength: fl, index: i, });
+          cameras.push(mesh.data);
 
         });
 

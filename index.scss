@@ -30,8 +30,9 @@ canvas {
   }
 
   .info-tooltip {
-    display: none;
-    margin: 10px 0;
+
+    &.hide { display: none; }
+    display: inline-block;
     position: relative;
 
     .pin-wrapper {
@@ -61,6 +62,15 @@ canvas {
     // position: absolute;
     // right: 5px;
     // top: 5px;
+  }
+
+  .image-panel {
+    img#camera-image {
+      width: 400px;
+      height: auto;
+      border-radius: 5px;
+      > .not-loaded { display: none; }
+    }
   }
 
 }

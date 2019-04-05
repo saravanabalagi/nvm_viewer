@@ -2,10 +2,6 @@
 function createTable(parent, data) {
   Object.keys(data).map(key => {
 
-    // skip if display is none
-    if(key === 'display' && data[key] === 'none')
-      return;
-
     let trNode = document.createElement('tr');
 
     let tdLabelNode = document.createElement('td');
@@ -14,6 +10,7 @@ function createTable(parent, data) {
 
     let tdValueNode = document.createElement('td');
     if(typeof data[key] === 'object' && data[key] !== null){
+      if('display' in data[key] && data[key].display === 'none') return;
       tdValueNode.className += 'subcontent';
       createTable(tdValueNode, data[key]);
     }
