@@ -67,7 +67,7 @@ function showToolTip(mouse, data) {
   let tooltipTable = tooltip.getElementsByClassName('table')[0];
 
   tooltipTable.innerHTML = '';
-  getTableHTML(tooltipTable, data);
+  createTable(tooltipTable, data);
 
   tooltip.style.display = 'block';
 
@@ -80,33 +80,6 @@ function hideToolTip() {
   tooltip.style.display = 'none';
 }
 
-// Fill table recursively parsing data
-function getTableHTML(parent, data) {
-  Object.keys(data).map(key => {
-
-    // skip if display is none
-    if(key === 'display' && data[key] === 'none')
-      return;
-
-    let trNode = document.createElement('tr');
-
-    let tdLabelNode = document.createElement('td');
-    tdLabelNode.innerHTML = key;
-    trNode.appendChild(tdLabelNode);
-
-    let tdValueNode = document.createElement('td');
-    if(typeof data[key] === 'object' && data[key] !== null){
-      tdValueNode.className += 'subcontent';
-      getTableHTML(tdValueNode, data[key]);
-    }
-    else
-      if(typeof(data[key]) === 'number') tdValueNode.innerHTML = Math.round(data[key] * 1000000) / 1000000;
-      else tdValueNode.innerHTML = data[key];
-    trNode.appendChild(tdValueNode);
-
-    parent.appendChild(trNode);
-  });
-}
 
 function highlightPoints(data) {
 

@@ -31,7 +31,6 @@ function loadFile(fileUrl) {
         }
 
         const numberOfCameras = parseInt(dataLines[1].split(' ')[0]);
-        console.log({numberOfCameras});
 
         const cameraIndex = 1 + 1;
         let camerasInFile = dataLines.slice(cameraIndex, cameraIndex + numberOfCameras);
@@ -114,12 +113,11 @@ function loadFile(fileUrl) {
         });
 
         const numberOfPoints = parseInt(dataLines[cameraIndex + numberOfCameras].split(' ')[0]);
-        console.log({numberOfPoints});
 
         let dotGeometry = new THREE.Geometry();
         let dotMaterial = new THREE.PointsMaterial( { size: 2, sizeAttenuation: false } );
 
-        const pointIndex = cameraIndex + numberOfCameras + 1
+        const pointIndex = cameraIndex + numberOfCameras + 1;
         let pointsInFile = dataLines.slice(pointIndex, pointIndex + numberOfPoints);
         pointsInFile.map((pointLine, i) => {
 
@@ -164,6 +162,9 @@ function loadFile(fileUrl) {
         let dot = new THREE.Points( dotGeometry, dotMaterial );
         dot.name = 'pointCloud';
         scene.add( dot );
+
+        const infoPanel = document.getElementById('info-panel-table');
+        createTable(infoPanel, {Poses: numberOfCameras, Points: numberOfPoints});
 
     });
 

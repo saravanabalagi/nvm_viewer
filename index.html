@@ -12,32 +12,38 @@
 		<!-- ui start -->
 		<div class="main-ui">
 
-			<button type="button" class="btn btn-warning" id='saveView' onclick="saveView()">
-				<i class="fas fa-save"></i>
-			</button>
-			<button type="button" class="btn btn-warning" id='loadView' onclick="loadView()">
-				<i class="fas fa-download"></i>
-			</button>
-			<button type="button" class="btn btn-warning" onclick="resetView()">
-				<i class="fas fa-redo"></i>
-			</button>
-			<button type="button" class="btn btn-primary" id="animate" onclick="toggleAnimate()">
-				<i class="fas fa-play"></i>
-				<i class="fas fa-pause"></i>
-			</button>
-			<br />
+			<div class="view-buttons">
+				<button type="button" class="btn btn-warning" id='saveView' onclick="saveView()">
+					<i class="fas fa-save"></i>
+				</button>
+				<button type="button" class="btn btn-warning" id='loadView' onclick="loadView()">
+					<i class="fas fa-download"></i>
+				</button>
+				<button type="button" class="btn btn-warning" onclick="resetView()">
+					<i class="fas fa-redo"></i>
+				</button>
+				<button type="button" class="btn btn-primary" id="animate" onclick="toggleAnimate()">
+					<i class="fas fa-play"></i>
+					<i class="fas fa-pause"></i>
+				</button>
+			</div>
 
 			<div class="info-panel">
-					<div class="info-tooltip">
-						<div class="pin-wrapper">
-							<button type="button" class="btn btn-danger unpinned" id='pin' onclick="pinObject()">
-								<i class="fas fa-thumbtack"></i>
-							</button>
-						</div>
-						<table class="table table-striped">
-						<!-- Tooltip dynamic content goes here -->
-						</table>
-					</div>
+				<table class="table table-striped" id="info-panel-table"></table>
+			</div>
+
+			<div class="info-tooltip">
+
+				<!-- Pin button -->
+				<div class="pin-wrapper">
+					<button type="button" class="btn btn-danger unpinned" id='pin' onclick="pinObject()">
+						<i class="fas fa-thumbtack"></i>
+					</button>
+				</div>
+
+				<!-- Tooltip dynamic content goes here -->
+				<table class="table table-striped"></table>
+
 			</div>
 
 		</div>
@@ -46,6 +52,7 @@
 		<!-- scripts -->
 		<script src="js/three.js"></script>
 		<script src="js/quaternion.js"></script>
+		<script src="js/create_table.js"></script>
 		<script src="js/map_controls.js"></script>
 		<script src="js/orbit_controls.js"></script>
 		<script src="js/obj_loader.js"></script>

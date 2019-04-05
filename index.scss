@@ -12,16 +12,16 @@ canvas {
 .btn { margin-bottom: 7px; }
 
 .main-ui {
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: 0; left: 0;
   margin: 10px;
 
-  .info-tooltip {
-    display: none;
-    margin: 10px 0;
+  table.table {
+    width: inherit;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 5px;
 
+    td, th { padding: 3px 0.75rem; }
     tr td:last-child { width: 200px; }
     tr:first-child td { border-top: 0; }
     tr:first-child td:first-child { border-top-left-radius: 5px; }
@@ -29,23 +29,38 @@ canvas {
     tr td.subcontent { padding: 0; }
   }
 
-  .pin-wrapper {
-    position: absolute;
-    padding: 5px;
-    right: 0;
+  .info-tooltip {
+    display: none;
+    margin: 10px 0;
+    position: relative;
 
-    #pin.unpinned > i {
-      transform: rotate(45deg);
+    .pin-wrapper {
+      position: absolute;
+      padding: 5px;
+      right: 0;
+
+      #pin.unpinned > i {
+        transform: rotate(45deg);
+      }
     }
   }
 
-  #animate {
-    > i.fa-play { display: inline; }
-    > i.fa-pause { display: none; }
-    &.playing {
-      > i.fa-play { display: none; }
-      > i.fa-pause { display: inline; }
+  .view-buttons {
+    margin-bottom: 5px;
+    #animate {
+      > i.fa-play { display: inline; }
+      > i.fa-pause { display: none; }
+      &.playing {
+        > i.fa-play { display: none; }
+        > i.fa-pause { display: inline; }
+      }
     }
+  }
+
+  .info-panel {
+    // position: absolute;
+    // right: 5px;
+    // top: 5px;
   }
 
 }
