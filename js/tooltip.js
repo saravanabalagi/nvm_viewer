@@ -3,7 +3,11 @@ var currentIntersectedObject;
 
 var isPinned = false;
 var isRightClickAndDragged = false;
-function pinObject() { isPinned = !isPinned; }
+function pinObject() {
+  isPinned = !isPinned;
+  if(isPinned) document.getElementById('pin').classList.remove('unpinned');
+  else document.getElementById('pin').classList.add('unpinned');
+}
 function rightClickAndDragged() { isRightClickAndDragged = true; }
 
 document.addEventListener('mousemove', onDocumentMouseMove, false);
