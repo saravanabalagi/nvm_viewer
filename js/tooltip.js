@@ -42,7 +42,6 @@ function update() {
           currentIntersectedObject.children[13].material.color.setHex( 0x000000 );
 
           showToolTip(mouse, currentIntersectedObject.data);
-          showImage(currentIntersectedObject.data);
           break;
         }
 
@@ -72,7 +71,10 @@ function showToolTip(mouse, data) {
   createTable(tooltipTable, data);
 
   // highlight pointcloud for current pose
-  highlightPoints(data);
+  let selectedPoints = highlightPoints(data);
+  showImage(currentIntersectedObject.data);
+  drawFeatures(selectedPoints);
+
 }
 
 function hideToolTip() {
@@ -134,6 +136,8 @@ function highlightPoints(data) {
   let dot = new THREE.Points( dotGeometry, dotMaterial );
   dot.name = 'highlightedPoints'
   scene.add( dot );
+
+  return selectedPoints;
 
 }
 

@@ -159,7 +159,7 @@ function loadFile(fileUrl) {
           // parse measurements
           let measurements = [];
           for (let i = 0; i < numberOfMeasurements; i++)
-            measurements.push(measurementsList.slice(i*4, i*4 + 4));
+            measurements.push(measurementsList.slice(i*4, i*4 + 4).map(m => parseFloat(m)));
 
           // create dot to display
           dotGeometry.vertices.push(new THREE.Vector3(...Object.values(displayPosition)));
