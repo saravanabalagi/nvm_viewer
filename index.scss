@@ -70,6 +70,16 @@ canvas {
 
   .image-panel {
 
+    .camera-image-wrapper {
+      position: relative;
+      display: table;
+
+      #camera-image-canvas {
+        position: absolute;
+        left: 0; right: 0; top: 0; bottom: 0;
+      }
+    }
+
     img#camera-image {
       width: 400px;
       height: auto;
@@ -96,7 +106,7 @@ canvas {
     }
 
     &.hide {
-      img#camera-image { display: none; }
+      .camera-image-wrapper { display: none; }
       .image-panel-buttons *:not(#toggleImageView) { display: none; }
       .image-panel-buttons #toggleImageView {
         > i.fa-eye-slash { display: none; }
