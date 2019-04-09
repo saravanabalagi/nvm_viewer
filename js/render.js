@@ -80,15 +80,16 @@ var light = new THREE.AmbientLight( 0x222222 );
 scene.add( light );
 
 // load from folder once car model is loaded
-const folderLocation = 'http://localhost:8000/data';
-const filename = 'slice5.nvm';
-function loadModel() { loadFile(folderLocation + '/' + filename); }
+const folderLocation = '/data';
+const filename = 'slice5';
+const extension = 'nvm';
+function loadModel() { loadFile(folderLocation + '/' + filename + '.' + extension); }
 
 // car
 var car = null;
 var manager = new THREE.LoadingManager( loadModel );
 var loader = new THREE.OBJLoader( manager );
-loader.load( 'js/car.obj', obj => car = obj );
+loader.load( 'assets/car.obj', obj => car = obj );
 
 // animation varibales
 var xAnimate = 0;

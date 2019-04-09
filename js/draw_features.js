@@ -1,4 +1,4 @@
-function drawFeatures(points) {
+function drawFeatures(points, camera) {
 
   const image = document.getElementById("camera-image");
   const canvas = document.getElementById("camera-image-canvas");
@@ -15,21 +15,14 @@ function drawFeatures(points) {
 
   points.map(point => {
     point.measurements.map(measurement => {
+      if(measurement[0]!==camera.index) return;
       let x = measurement[2] + 0.5;
       let y = measurement[3] + 0.5;
-      // console.log('painting: ', {x,y});
-      if(x<min.x) min.x = x;
-      if(y<min.y) min.y = y;
-
-      if(x>max.x) max.x = x;
-      if(y>max.y) max.y = y;
 
       ctx.beginPath();
       ctx.arc(x * width, y * height, 1, 0, 2 * Math.PI);
       ctx.stroke();
     });
   });
-
-  // console.log(min, max);
 
 }

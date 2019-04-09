@@ -73,7 +73,7 @@ function showToolTip(mouse, data) {
   // highlight pointcloud for current pose
   let selectedPoints = highlightPoints(data);
   showImage(currentIntersectedObject.data);
-  drawFeatures(selectedPoints);
+  drawFeatures(selectedPoints, data);
 
 }
 
@@ -155,7 +155,7 @@ function showImage(data) {
   if(imagePanel.classList.contains('no-image')) imagePanel.classList.remove('no-image');
 
   let domImg = document.getElementById('camera-image');
-  domImg.src = '/data/slice5/' + camera.image.value;
+  domImg.src = '/data/' + filename + '/' + camera.image.value;
 }
 
 function hideImage() {
