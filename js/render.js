@@ -18,10 +18,12 @@ renderer.domElement.addEventListener('mousedown', (e) => {
 	if(e.button === 2)  // if right clicked
 		renderer.domElement.addEventListener('mousemove', rightClickAndDragged);
 });
+
 const preventClick = (e) => {
 	e.preventDefault();
 	e.stopImmediatePropagation();
-}
+};
+
 renderer.domElement.addEventListener('mouseup', e => {
 	if(e.button === 2) {
 		if(isRightClickAndDragged) e.target.addEventListener('contextmenu', preventClick);
@@ -32,13 +34,13 @@ renderer.domElement.addEventListener('mouseup', e => {
 		isRightClickAndDragged = false;
 		renderer.domElement.removeEventListener('mousemove', rightClickAndDragged);
 	}
-})
+});
 
 document.body.appendChild( renderer.domElement );
 
 // controls
 // controls = new THREE.MapControls( camera, renderer.domElement );
-controls = new THREE.OrbitControls( camera, renderer.domElement );
+let controls = new THREE.OrbitControls( camera, renderer.domElement );
 
 //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
 controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
@@ -54,30 +56,30 @@ controls.maxPolarAngle = Math.PI / 2;
 // var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
 
 // ground
-var ground = new THREE.Mesh( new THREE.PlaneBufferGeometry( 20000, 20000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
+const ground = new THREE.Mesh( new THREE.PlaneBufferGeometry( 20000, 20000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
 ground.name = 'ground';
 ground.rotation.x = - Math.PI / 2;
 ground.receiveShadow = true;
 scene.add( ground );
 
 // grid
-var grid = new THREE.GridHelper( 20000, 200, 0x000000, 0x000000 );
+const grid = new THREE.GridHelper( 20000, 200, 0x000000, 0x000000 );
 grid.material.opacity = 0.2;
 grid.material.transparent = true;
 scene.add( grid );
 
 // axis helper
-var axesHelper = new THREE.AxesHelper( 5 );
+const axesHelper = new THREE.AxesHelper( 5 );
 axesHelper.name = 'axesHelper';
 scene.add( axesHelper );
 
 // lights
-var light = new THREE.DirectionalLight( 0xffffff );
-light.position.set( 1, 1, 1 );
-scene.add( light );
+const directionalLight = new THREE.DirectionalLight( 0xffffff );
+directionalLight.position.set( 1, 1, 1 );
+scene.add( directionalLight );
 
-var light = new THREE.AmbientLight( 0x222222 );
-scene.add( light );
+const ambientLight = new THREE.AmbientLight( 0x222222 );
+scene.add( ambientLight );
 
 // load from folder once car model is loaded
 const folderLocation = '/data';
@@ -86,22 +88,22 @@ const extension = 'nvm';
 function loadModel() { loadFile(folderLocation + '/' + filename + '.' + extension); }
 
 // car
-var car = null;
-var manager = new THREE.LoadingManager( loadModel );
-var loader = new THREE.OBJLoader( manager );
+let car = null;
+const manager = new THREE.LoadingManager( loadModel );
+const loader = new THREE.OBJLoader( manager );
 loader.load( 'assets/car.obj', obj => car = obj );
 
-// animation varibales
-var xAnimate = 0;
-var yAnimate = 0;
-var zAnimate = 0;
-var shouldAnimate = false;
+// animation variables
+let xAnimate = 0;
+let yAnimate = 0;
+let zAnimate = 0;
+let shouldAnimate = false;
 
 // animate
 function animate() {
 
 	if(shouldAnimate) {
-		var timer = Date.now() * 0.0001;
+		const timer = Date.now() * 0.0001;
 		camera.position.x = Math.cos( timer ) * 80;
 		camera.position.z = Math.sin( timer ) * 80;
 		camera.lookAt( xAnimate, 0, zAnimate );

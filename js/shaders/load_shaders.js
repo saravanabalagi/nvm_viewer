@@ -9,9 +9,9 @@ async function loadShader(shaderElement, fileUrl) {
 const vertexShader = document.createElement('script');
 vertexShader.type = 'x-shader/x-vertex';
 vertexShader.id = 'vs';
-loadShader(vertexShader, '/js/shaders/vertex_shader.js');
+loadShader(vertexShader, '/js/shaders/depth_shader.vert');
 
 const fragmentShader = document.createElement('script');
 fragmentShader.type = 'x-shader/x-fragment';
 fragmentShader.id = 'fs';
-loadShader(fragmentShader, '/js/shaders/fragment_shader.js');
+loadShader(fragmentShader, '/js/shaders/depth_shader.frag');

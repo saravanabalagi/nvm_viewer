@@ -1,5 +1,5 @@
-var mouse = { x: 0, y: 0 };
-var currentIntersectedObject;
+let mouse = {x: 0, y: 0};
+let currentIntersectedObject;
 
 document.addEventListener('mousemove', onDocumentMouseMove, false);
 function onDocumentMouseMove(event) {
@@ -16,21 +16,21 @@ function update() {
 
   if(isPinned) return;
 
-  var vector = new THREE.Vector3( mouse.x, mouse.y, 1 );
+  let vector = new THREE.Vector3( mouse.x, mouse.y, 1 );
   vector.unproject( camera );
 
-  var ray = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+  let ray = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
 
   // create an array containing all objects in the scene with which the ray intersects
-  var intersects = ray.intersectObjects( scene.children, true );
+  let intersects = ray.intersectObjects( scene.children, true );
   if ( intersects.length > 0 ) {
 
     // Keep checking even behind the object in front
-    for (var i = 0; i < intersects.length; i++) {
-      if ( intersects[ i ].object != currentIntersectedObject ) {
+    for (let i = 0; i < intersects.length; i++) {
+      if ( intersects[ i ].object !== currentIntersectedObject ) {
 
-        if(intersects[ i ].object.type == 'Mesh'
-            && intersects[ i ].object.parent.name == 'car') {
+        if(intersects[ i ].object.type === 'Mesh'
+            && intersects[ i ].object.parent.name === 'car') {
 
           // restore previous intersection object (if it exists) to its original color
           if ( currentIntersectedObject )
@@ -85,10 +85,10 @@ function hideToolTip() {
 
 function highlightPoints(data) {
 
-  let texture = new THREE.TextureLoader().load( 'js/viridis.png' );
+  let texture = new THREE.TextureLoader().load( 'assets/viridis.png' );
   let dotGeometry = new THREE.Geometry();
 
-  let selectedPoints = points.filter(point => point.measurements.some(measurement => measurement[0]==data.index))
+  let selectedPoints = points.filter(point => point.measurements.some(measurement => measurement[0]===data.index));
   selectedPoints.map(point =>
     dotGeometry.vertices.push(new THREE.Vector3(
                                   point.displayPosition.x,
@@ -106,7 +106,7 @@ function highlightPoints(data) {
     x: percentile(pointsArray.xPoints, 0.9),
     y: percentile(pointsArray.yPoints, 0.9),
     z: percentile(pointsArray.zPoints, 0.9),
-  }
+  };
 
   // let zMax = Math.max(...selectedPoints.map(point => Math.abs(point.displayPosition.z)));
   // console.log({localMax, zMax});
@@ -134,7 +134,7 @@ function highlightPoints(data) {
   } );
 
   let dot = new THREE.Points( dotGeometry, dotMaterial );
-  dot.name = 'highlightedPoints'
+  dot.name = 'highlightedPoints';
   scene.add( dot );
 
   return selectedPoints;
@@ -178,4 +178,4 @@ function percentile(arr, p) {
     if ((arr[base + 1] !== undefined))
         return arr[base] + rest * (arr[base + 1] - arr[base]);
     else return arr[base];
-};
+}
