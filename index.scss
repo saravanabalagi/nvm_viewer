@@ -3,6 +3,11 @@
   font-size: 0;
 }
 
+@mixin display-icon {
+  display: inline;
+  font-size: 16px;
+}
+
 body {
   margin: 0;
   overflow: hidden;
@@ -60,11 +65,11 @@ canvas {
   .view-buttons {
     margin-bottom: 5px;
     #animate {
-      > i.fa-play { display: inline; }
+      > i.fa-play { @include display-icon; }
       > i.fa-pause  { @include display-none-icon; }
       &.playing {
         > i.fa-play  { @include display-none-icon; }
-        > i.fa-pause { display: inline; }
+        > i.fa-pause { @include display-icon; }
       }
     }
   }
@@ -98,7 +103,7 @@ canvas {
       top: 5px; right: 5px;
       .image-panel-buttons #toggleViewPosition {
         > i.fa-arrow-right  { @include display-none-icon; }
-        > i.fa-arrow-left { display: inline; }
+        > i.fa-arrow-left { @include display-icon; }
       }
     }
 
@@ -106,7 +111,7 @@ canvas {
       img#camera-image { width: 200px; }
       .image-panel-buttons #toggleZoomView {
         > i.fa-search-minus  { @include display-none-icon; }
-        > i.fa-search-plus { display: inline; }
+        > i.fa-search-plus { @include display-icon; }
       }
     }
 
@@ -115,7 +120,7 @@ canvas {
       .image-panel-buttons *:not(#toggleImageView) { display: none; }
       .image-panel-buttons #toggleImageView {
         > i.fa-eye-slash  { @include display-none-icon; }
-        > i.fa-eye { display: inline; }
+        > i.fa-eye { @include display-icon; }
       }
     }
 
@@ -128,17 +133,17 @@ canvas {
       margin-bottom: 5px;
 
       #toggleZoomView {
-        > i.fa-search-minus { display: inline; }
+        > i.fa-search-minus { @include display-icon; }
         > i.fa-search-plus  { @include display-none-icon; }
       }
 
       #toggleImageView {
-        > i.fa-eye-slash { display: inline; }
+        > i.fa-eye-slash { @include display-icon; }
         > i.fa-eye  { @include display-none-icon; }
       }
 
       #toggleViewPosition {
-        > i.fa-arrow-right { display: inline; }
+        > i.fa-arrow-right { @include display-icon; }
         > i.fa-arrow-left  { @include display-none-icon; }
       }
 

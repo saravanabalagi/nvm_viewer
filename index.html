@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset=utf-8>
 		<title>NVM Viewer</title>
@@ -66,8 +66,8 @@
 					</button>
 				</div>
 				<div class="camera-image-wrapper">
-					<img id="camera-image"/>
-					<canvas id='camera-image-canvas' />
+					<img id="camera-image" src="" alt="Camera Image" />
+					<canvas id='camera-image-canvas'></canvas>
 				</div>
 			</div>
 
@@ -76,8 +76,13 @@
 
 		<!-- scripts -->
 		<script src="js/threejs/three.js"></script>
-		<script src="js/quaternion.js"></script>
-		<script src="js/create_table.js"></script>
+
+		<script src="js/helpers/create_table.js"></script>
+		<script src="js/helpers/highlight_points.js"></script>
+		<script src="js/helpers/percentile.js"></script>
+		<script src="js/helpers/quaternion.js"></script>
+		<script src="js/helpers/show_image.js"></script>
+
 		<script src="js/threejs/map_controls.js"></script>
 		<script src="js/threejs/orbit_controls.js"></script>
 		<script src="js/threejs/obj_loader.js"></script>
