@@ -1,4 +1,6 @@
-const meshRotationOffset = -45 + 180;
+const meshRotationOffsetX = 0;
+const meshRotationOffsetY = 180;
+const meshRotationOffsetZ = 90;
 const cameraRotationOffset = 45;
 
 var points = [];
@@ -60,7 +62,7 @@ function loadFile(fileUrl) {
           let displayPosition = {
             x: x - initialPosition.x,
             y: z - initialPosition.z,
-            z: -(y - initialPosition.y)
+            z: y - initialPosition.y
           };
 
           let camera = new THREE.PerspectiveCamera( 10, 1, 10, 20 );
@@ -70,8 +72,7 @@ function loadFile(fileUrl) {
 
           // increase hue as the car moves forward
           let hValue = i/(camerasInFile.length*10);
-          let coloredMeshMaterial = new THREE.MeshPhongMaterial( { color: new THREE.Color().setHSL(hValue, 0.8, 0.7) } );
-          mesh.children.filter(e => e.name=='Body_Plane')[0].material = coloredMeshMaterial;
+          mesh.children.filter(e => e.name==='Body_Plane')[0].material = new THREE.MeshPhongMaterial({color: new THREE.Color().setHSL(hValue, 0.8, 0.7)});
 
           if(!initialPosition)
             position = initialPosition;
@@ -80,9 +81,9 @@ function loadFile(fileUrl) {
           mesh.position.y = displayPosition.y;
           mesh.position.z = displayPosition.z;
 
-          // mesh.rotation.x = rotationEuler.x
-          // mesh.rotation.z = rotationEuler.z
-          mesh.rotation.y = -rotationEuler.y + (meshRotationOffset * Math.PI / 180)
+          mesh.rotation.x = rotationEuler.z + (meshRotationOffsetX * Math.PI / 180);
+          mesh.rotation.y = -rotationEuler.y + (meshRotationOffsetY * Math.PI / 180);
+          mesh.rotation.z = -rotationEuler.x + (meshRotationOffsetZ * Math.PI / 180);
           // console.log(rotationEuler);
 
           mesh.updateMatrix();
@@ -104,13 +105,13 @@ function loadFile(fileUrl) {
           scene.add( mesh );
 
           // add camera
-          camera.position.x = mesh.position.x
-          camera.position.y = mesh.position.y
-          camera.position.z = mesh.position.z
+          camera.position.x = mesh.position.x;
+          camera.position.y = mesh.position.y;
+          camera.position.z = mesh.position.z;
 
-          camera.rotation.x = mesh.rotation.x
-          camera.rotation.y = -mesh.rotation.y + ( cameraRotationOffset * Math.PI / 180 )
-          camera.rotation.z = mesh.rotation.z
+          camera.rotation.x = mesh.rotation.x;
+          camera.rotation.y = -mesh.rotation.y + ( cameraRotationOffset * Math.PI / 180 );
+          camera.rotation.z = mesh.rotation.z;
 
           camera.name = 'carCamera';
           cameraHelper.name = 'carCameraHelper';
@@ -143,8 +144,8 @@ function loadFile(fileUrl) {
           let displayPosition = {
             x: x - initialPosition.x,
             y: z - initialPosition.z,
-            z: -(y - initialPosition.y)
-          }
+            z: y - initialPosition.y
+          };
 
           // parse rgb
           let r = parseFloat(params[3]);
