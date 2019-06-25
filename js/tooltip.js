@@ -32,6 +32,10 @@ function update() {
         if(intersects[ i ].object.type === 'Mesh'
             && intersects[ i ].object.parent.name === 'car') {
 
+          // avoid repainting if it is the same object
+          // or different part of the same object
+          if(intersects[ i ].object.parent === currentIntersectedObject) break;
+
           // restore previous intersection object (if it exists) to its original color
           if ( currentIntersectedObject )
               resetHighlightedObject(currentIntersectedObject);
